@@ -1,0 +1,48 @@
+def print_menu(menu):
+    print("Меню кав'ярні:")
+    for item, price in menu.items():
+        print(f"{item}: {price} грн")
+
+def add_to_menu(menu):
+    item = input("Введіть назву нового товару: ")
+    price = float(input("Введіть ціну за одиницю товару: "))
+    menu[item] = price
+
+def calculate_order_cost(order, menu):
+    total_cost = 0
+    for item, quantity in order.items():
+        if item in menu:
+            item_cost = menu[item] * quantity
+            total_cost += item_cost
+            print(f"{item}: {quantity} x {menu[item]} грн = {item_cost} грн")
+        else:
+            print(f"Товар '{item}' відсутній у меню.")
+    return total_cost
+
+def main():
+    menu = {"Кава": 25.0, "Чай": 15.0, "Печиво": 10.0}
+    order = {}
+
+    print_menu(menu)
+
+    while True:
+        item = input("Введіть назву товару (або 'кінець' для завершення замовлення): ")
+        if item.lower() == "кінець":
+            break
+
+        if item in menu:
+            quantity = int(input(f"Введіть кількість {item}: "))
+            order[item] = order.get(item, 0) + quantity
+        else:
+            add_new = input(f"'{item}' відсутній у меню. Додати його? (так/ні): ")
+            if add_new.lower() == "так":
+                add_to_menu(menu)
+                quantity = int(input(f"Введіть кількість {item}: "))
+                order[item] = order.get(item, 0) + quantity
+
+    print("\nЗамовлення:")
+    total_cost = calculate_order_cost(order, menu)
+    print(f"Загальна вартість замовлення: {total_cost} грн")
+
+if __name__ == "__main__":
+    main()
